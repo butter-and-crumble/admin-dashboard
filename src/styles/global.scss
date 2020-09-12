@@ -1,0 +1,95 @@
+@import "_variables.scss";
+
+#app {
+    font-family: 'Lato', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+}
+button {
+    transition: all 500ms ease;
+    border-radius: 5px;
+    padding: 12px 25px;
+    border: none;
+    font-weight: 400;
+    font-size: 15px;
+    background: $med-blue;
+    color: #FFFFFF;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    &:focus {
+        outline: none !important;
+    }
+    &:active {
+        background: $dark-blue;
+    }
+
+}
+body {
+    margin: 0;
+}
+
+#nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: $med-blue;
+    }
+  }
+}
+
+input {
+    border: 1px solid $med-blue;
+    border-radius: 3px;
+    background: $light-blue;
+    color: $dark-blue;
+    padding: 10px;
+    margin: 5px;
+    &:focus {
+        outline: none !important;
+        background: $med-blue;
+        color: #FFFFFF;
+    }
+    transition: all 500ms ease;
+}
+
+
+
+input::-webkit-input-placeholder {
+    color: $dark-blue;
+}
+input:focus::-webkit-input-placeholder {
+    color: #FFFFFF;
+    opacity: 0.75;
+}
+
+/* Firefox < 19 */
+input:-moz-placeholder {
+    color: $dark-blue;
+}
+input:focus:-moz-placeholder {
+    color: #FFFFFF;
+    opacity: 0.75;
+}
+
+/* Firefox > 19 */
+input::-moz-placeholder {
+    color: $dark-blue;
+}
+input:focus::-moz-placeholder {
+    color: #FFFFFF;
+    opacity: 0.75;
+}
+
+/* Internet Explorer 10 */
+input:-ms-input-placeholder {
+    color: $dark-blue;
+}
+input:focus:-ms-input-placeholder {
+    color: #FFFFFF;
+    opacity: 0.75;
+}

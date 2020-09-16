@@ -34,5 +34,5 @@ export {
     firebase,
     blackouts,
     orders,
-    functions
+    functions,
 }

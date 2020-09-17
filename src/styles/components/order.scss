@@ -1,0 +1,56 @@
+.order {
+    background: #FFFFFF;
+    box-shadow: 0 4px 25px 0 rgba(0,0,0,.1);
+    border-radius: 10px;
+    padding-bottom: 15px;
+}
+
+.line-item-table {
+    table-layout:fixed;
+    width: 100%;
+}
+.line-items {
+    display: flex;
+    align-items: center
+}
+
+.customer-info {
+    text-align: center
+}
+
+h3 {
+    color: #FFFFFF;
+    width: 100%;
+    background: $med-blue;
+    padding: 10px 0px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.order-detail-button {
+    padding: 0px;
+    width: 50px;
+    height: 35px;
+}
+
+.completed {
+    opacity: 0.5;
+    background: rgba(0,0,0,0.25)
+}
+@media only screen and (max-device-width: 480px) {
+    .order {
+        font-size: 0.5em;
+    }
+    img {
+        width: 25px;
+    }
+    button {
+        padding: 5px 10px;
+    }
+
+    .order-detail-button {
+        border-radius: 3px;
+        padding: 0px;
+        width: 25px;
+        height: 20px;
+    }
+}

@@ -1,49 +1,53 @@
 <template>
   <div class="orders">
-    <h1>This is the orders page</h1>
-    <label>Filter by Name:</label>
-    <input class="form-control" v-model="filters.orderNumber.value"/>
-    <v-table :filters="filters" :data="orders">
-        <thead slot="head">
-            <v-th sortKey="orderNumber">Order Number</v-th>
-            <v-th sortKey="createdOn">Order Date</v-th>
-            <th>Products</th>
-            <th>Details</th>
-        </thead>
-        <tbody slot="body" slot-scope="{displayData}">
-            <tr v-for="row in displayData" :key="row.id">
-              <td>{{ row.orderNumber }}</td>
-              <td>{{ new Date(row.createdOn).toLocaleDateString("en-US") }}</td>
-              <td>
-                  <li v-for="item in row.lineItems" :key="item.id">
-                      {{item.productName}} | {{item.quantity}}
-                  </li>
-              </td>
-              <td>{{ row.customerEmail }}</td>
-            </tr>
-        </tbody>
-      </v-table>
+      <Order
+        v-for="order in orders"
+        v-bind:details="order"
+        :key="order.id"
+        />
   </div>
 </template>
 
 <script lang="js">
     import * as fb from '@/plugins/firebase.ts'
+    import Order from '@/components/Order.vue'
     export default {
         data() {
             return {
                 orders: [],
-                filters: {
-                    orderNumber: { value: '', keys: ['orderNumber'] }
-                }
             }
         },
         components: {
+            Order
+        },
+        methods: {
+            attachOrderModifiers: function(orders){
+                orders.forEach((order) => {
+                    const orderNumber = parseInt(order.orderNumber)
+                    fb.orders.where("orderId", "==", orderNumber)
+                        .get()
+                        .then(function(querySnapshot) {
+                            querySnapshot.forEach(function(doc) {
+                                order.modifiers = doc.data();
+                            });
+                        })
+                        .catch(function(error) {
+                            console.log("Error getting documents: ", error);
+                        });
+                })
+                return orders
+            },
+            getSquarespaceOrders: function(){
+                const getOrders = fb.functions.httpsCallable('getOrders');
+                return getOrders().then(result => result.data.result)
+            },
+            getOrdersWithModifiers: async function(){
+                const sqsOrders = await this.getSquarespaceOrders()
+                this.orders  = await this.attachOrderModifiers(sqsOrders)
+            }
         },
         created(){
-            const getOrders = fb.functions.httpsCallable('getOrders');
-            getOrders().then(function(result) {
-                this.orders = result.data.result
-            }.bind(this));
+            this.getOrdersWithModifiers()
         }
     }
 </script>

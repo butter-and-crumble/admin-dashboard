@@ -17,6 +17,30 @@ Vue.use(VueRouter)
         }
     },
     {
+        path: '/orders',
+        name: 'Orders',
+        component: () => import('../views/Orders.vue'),
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/products',
+        name: 'Products',
+        component: () => import('../views/Products.vue'),
+        meta: {
+            requiresAuth: true
+        }
+    },
+	{
+		path: '/calendar',
+		name: 'Calendar',
+		component: () => import('../views/Calendar.vue'),
+		meta: {
+			requiresAuth: true
+		}
+	},
+    {
         path: '/blackouts',
         name: 'Blackouts',
         component: () => import('../views/Blackouts.vue'),
@@ -25,9 +49,9 @@ Vue.use(VueRouter)
         }
     },
     {
-        path: '/orders',
-        name: 'Orders',
-        component: () => import('../views/Orders.vue'),
+        path: '/product/:id',
+        name: 'Product',
+        component: () => import('../views/Product.vue'),
         meta: {
             requiresAuth: true
         }

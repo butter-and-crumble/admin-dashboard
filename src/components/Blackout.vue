@@ -1,36 +1,26 @@
 <template>
-	<div class="blackouts">
-		<v-card
-			class="d-flex flex-wrap justify-space-around"
-			color="lighten-2"
-			flat
-			tile
-		>
-			<v-card
-				v-for="item in products"
-				:key="item.id"
-				class="pa-md-4 mt-md-4 lg text-center rounded-lg"
-				outlined
-				:elevation="1"
-				tile
-			>
-				<p class="text-center font-weight-bold">{{item.name}}</p>
-				<div class="calendar-container">
-					<DatePicker
-					:attributes='attrs'
-					:value="null"
-					:min-date='new Date()'
-					v-model="item['range']"
-					mode='range'
-					color="indigo"
-					is-expanded
-					is-inline
-					/>
-				</div>
-				<v-btn color="mt-md-4 primary" @click="changeBlackout($event, item.id, item['range'])">Submit</v-btn>
-			</v-card>
-		</v-card>
-  </div>
+  <v-app class="blackouts">
+        <h3>{{item.name}}</h3>
+        <div class="calendar-container">
+            <DatePicker
+              :attributes='attrs'
+              :value="null"
+              :min-date='new Date()'
+              v-model="item['range']"
+              mode='range'
+              color="indigo"
+              is-expanded
+              is-inline
+              />
+        </div>
+        <v-btn
+            depressed
+            color="primary"
+            @click="changeBlackout($event, item.id, item['range'])"
+        >
+            Submit
+        </v-btn>
+</v-app>
 </template>
 
 <script lang="js">
@@ -39,7 +29,6 @@
     export default {
         data() {
             return {
-                products: null,
                 attrs: [
                     {
                         key: 'today',
@@ -70,11 +59,15 @@
         },
         created(){
             const getProducts = fb.functions.httpsCallable('getProducts');
+
+
             fb.blackouts.onSnapshot(querySnapshot => {
                 const blackouts = {}
+
                 querySnapshot.forEach(doc => {
                     blackouts[doc.id] = doc.data()
                 })
+
                 getProducts().then(function(result) {
                     this.products = result.data.products
                     this.products.forEach(function(product){
@@ -89,9 +82,15 @@
                                 end: new Date()
                             }
                         }
+
                     })
                 }.bind(this))
             })
+
         }
     }
 </script>
+<!--
+<style lang="scss" scoped>
+@import "@/styles/components/blackouts.scss";
+</style> -->

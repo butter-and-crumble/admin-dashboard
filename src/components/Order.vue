@@ -58,7 +58,7 @@
         }
     }
 </script>
-
+<!-- 
 <style lang="scss" scoped>
 @import "@/styles/components/order.scss";
-</style>
+</style> -->

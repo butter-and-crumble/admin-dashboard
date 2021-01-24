@@ -1,25 +1,35 @@
 <template>
-  <div class="orders">
-      <Order
-        v-for="order in orders"
-        v-bind:details="order"
-        :key="order.id"
-        />
-  </div>
+	<v-data-table
+		:headers="headers"
+		:items="orders"
+		:items-per-page="5"
+		class="elevation-1"
+	></v-data-table>
 </template>
 
 <script lang="js">
     import * as fb from '@/plugins/firebase.ts'
-    import Order from '@/components/Order.vue'
     export default {
         data() {
             return {
+				headers: [
+					{
+						text: 'Order Number',
+						align: 'start',
+						value: 'orderNumber',
+					},
+					{ text: 'Item', value: 'createdOn' },
+					{ text: 'Quantity', value: 'createdOn' },
+					{ text: 'Order Date', value: 'createdOn' },
+					{ text: 'Pickup Date', value: 'fat' },
+					{ text: 'Details', value: 'carbs' },
+				],
                 orders: [],
             }
         },
-        components: {
-            Order
-        },
+        // components: {
+        //     Order
+        // },
         methods: {
             attachOrderModifiers: function(orders){
                 orders.forEach((order) => {
@@ -44,6 +54,7 @@
             getOrdersWithModifiers: async function(){
                 const sqsOrders = await this.getSquarespaceOrders()
                 this.orders  = await this.attachOrderModifiers(sqsOrders)
+				console.log(this.orders)
             }
         },
         created(){
@@ -51,6 +62,7 @@
         }
     }
 </script>
+<!--
 <style lang="scss" scoped>
 @import "@/styles/components/orders.scss";
-</style>
+</style> -->

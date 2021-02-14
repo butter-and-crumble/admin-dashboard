@@ -63,7 +63,6 @@
 				</v-container>
 			</v-content>
 			<v-footer class="py-3">
-				<span class="ml-auto overline">Iatek &copy;2020</span>
 			</v-footer>
 		</v-app>
 	</div>

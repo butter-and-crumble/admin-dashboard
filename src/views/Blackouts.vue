@@ -9,7 +9,7 @@
 			<v-card
 				v-for="item in products"
 				:key="item.id"
-				class="pa-md-4 mt-md-4 lg text-center rounded-lg"
+				class="pa-md-4 ma-2 mt-md-4 lg text-center rounded-lg"
 				outlined
 				:elevation="1"
 				tile

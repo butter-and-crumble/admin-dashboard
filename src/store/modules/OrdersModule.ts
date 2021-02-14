@@ -1,6 +1,17 @@
 import { Module } from "vuex";
 import * as fb from '@/plugins/firebase.ts'
 
+const months = [ "January", "February", "March", "April", "May", "June",
+           "July", "August", "September", "October", "November", "December" ];
+
+function formatDate(date: string){
+    const parts = date.split("-")
+    const month = months[Number(parts[1]) - 1]
+    const day = String(Number(parts[2].substring(0,2)))
+    const formattedDate = month + ' ' + day + ', ' + parts[0]
+    return formattedDate
+}
+
 function attachOrderModifiers(orders: any, orderLines: any){
     orders.forEach((order: any) => {
 
@@ -11,19 +22,23 @@ function attachOrderModifiers(orders: any, orderLines: any){
                 querySnapshot.forEach(function(doc) {
                     const orderModifiers = doc.data();
                     order.lineItems.forEach((line: any) => {
-                        const lineModifier = orderModifiers[line.id]
-                        const options = { year: "numeric", month: "long", day: "numeric" }
-                        const formattedOrderDate = new Date(order.createdOn).toLocaleDateString(undefined, options)
-                        const formattedPickupDate = new Date(lineModifier.dateTime.value.date).toLocaleDateString(undefined, options)
-                        orderLines.push({
-                            id: line.id,
-                            orderNumber: order.orderNumber,
-                            item: line.productName,
-                            quantity: line.quantity,
-                            orderDate: formattedOrderDate,
-                            pickupDate: formattedPickupDate,
-                            modifier: lineModifier
-                        })
+                        try {
+                            const lineModifier = orderModifiers[line.id]
+                            const orderDate = formatDate(order.createdOn)
+                            const pickupDate = formatDate(lineModifier.dateTime.value.date)
+                            orderLines.push({
+                                id: line.id,
+                                orderNumber: order.orderNumber,
+                                item: line.productName,
+                                quantity: line.quantity,
+                                orderDate: orderDate,
+                                pickupDate: pickupDate,
+                                modifier: lineModifier
+                            })
+                        } catch {
+                            console.log("Error")
+                        }
+
                     })
                 });
             })

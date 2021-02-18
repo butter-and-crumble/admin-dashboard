@@ -1,51 +1,51 @@
 <template>
-    <div class="order">
-        <h3>Order #{{details.orderNumber}}</h3>
-        <div class="customer-info">
-            <p><strong>Customer:</strong> {{details.billingAddress.firstName}} {{details.billingAddress.lastName}}</p>
-            <p><strong>Email:</strong> {{details.customerEmail}}</p>
-        </div>
-        <div class="line-items" v-for="item in details.lineItems" :key="item.id">
-        </div>
-        <table class="line-item-table">
-            <colgroup>
-                <col width="10%">
-                <col width="30%">
-                <col width="10%">
-                <col width="20%">
-                <col width="20%">
-                <col>
-            </colgroup>
-            <tr>
-                <th></th>
-                <th>Product</th>
-                <th>QTY</th>
-                <th>Pickup Day</th>
-                <th>Pickup Time</th>
-                <th></th>
-            </tr>
-            <tr class="line-item" v-for="item in details.lineItems" :key="item.id">
-                <td><img width="50px" :src="item.imageUrl"/></td>
-                <td>{{item.productName}}</td>
-                <td>{{item.quantity}}</td>
-                <td>August 12</td>
-                <td>12:30</td>
-                <td>
-                    <button class="order-detail-button">
-                        <img height="100%" src="@/assets/toc-24px.svg"/>
-                    </button>
-                </td>
-                <!-- <td><button>...</button></td> -->
-            </tr>
-        </table>
-        <button @click="orderCompleted($event)">Mark Completed</button>
-    </div>
+    <v-card
+      elevation="2"
+      v-if="data.item"
+    >
+        <v-card-title>{{data.item}}</v-card-title>
+        <v-card-subtitle>Order Number: {{data.orderNumber}}</v-card-subtitle>
+
+        <v-list-item two-line>
+          <v-list-item-content>
+            <v-list-item-title>Customer</v-list-item-title>
+            <v-list-item-subtitle>{{data.sqs.firstName}} {{data.sqs.lastName}}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{data.sqs.customerEmail}}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item two-line v-if="data.modifier.dateTime.needed">
+          <v-list-item-content>
+            <v-list-item-title>Pickup</v-list-item-title>
+            <v-list-item-subtitle>{{data.pickupDate}}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{data.modifier.dateTime.value.time}}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item two-line v-if="data.modifier.writing.needed">
+          <v-list-item-content>
+            <v-list-item-title>Custom Writing</v-list-item-title>
+            <v-list-item-subtitle>{{data.modifier.writing.value}}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item two-line>
+          <v-list-item-content>
+            <v-list-item-title>{{data.variants.find(e => e.optionName === "Meri Meri Candles").optionName}}</v-list-item-title>
+            <v-list-item-subtitle>{{data.variants.find(e => e.optionName === "Meri Meri Candles").value}}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+    </v-card>
 </template>
 
 <script>
     export default {
         name: 'order',
-        props:  ['details'],
+        data() {
+            return {
+                data: {}
+            }
+        },
+        async created(){
+            this.data = this.$route.params.order
+        },
         methods: {
             orderCompleted: function(e){
                 console.log(this.details)
@@ -58,7 +58,7 @@
         }
     }
 </script>
-<!-- 
+<!--
 <style lang="scss" scoped>
 @import "@/styles/components/order.scss";
 </style> -->

@@ -160,7 +160,6 @@ import moment from 'moment'
 
         this.orders = await this.getOrders
         this.orders.forEach((order) => {
-            console.log(order)
             const dateTimeObj = order.modifier.dateTime
             if (dateTimeObj.needed){
                 const timeString = moment(dateTimeObj.value.time, ["h:mm A"]).format("HH:mm:ss")
@@ -170,6 +169,8 @@ import moment from 'moment'
                 const eventEnd = new Date(moment(eventString).add(1, 'hours'))
                 events.push({
                     name: order.item,
+                    id: order.id,
+                    order: order,
                     start: eventStart,
                     end: eventEnd,
                     color: this.colors[this.rnd(0, this.colors.length - 1)],
@@ -177,7 +178,6 @@ import moment from 'moment'
                 })
             }
         })
-        console.log(this.events)
         this.events = events
     },
     mounted () {
@@ -201,22 +201,7 @@ import moment from 'moment'
         this.$refs.calendar.next()
       },
       showEvent ({ nativeEvent, event }) {
-        const open = () => {
-          this.selectedEvent = event
-          this.selectedElement = nativeEvent.target
-          setTimeout(() => {
-            this.selectedOpen = true
-          }, 10)
-        }
-
-        if (this.selectedOpen) {
-          this.selectedOpen = false
-          setTimeout(open, 10)
-        } else {
-          open()
-        }
-
-        nativeEvent.stopPropagation()
+          this.$router.push({ name: 'Order', params: { id: event.id, order: event.order} })
       },
       rnd (a, b) {
         return Math.floor((b - a + 1) * Math.random()) + a

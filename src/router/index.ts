@@ -49,9 +49,9 @@ Vue.use(VueRouter)
         }
     },
     {
-        path: '/product/:id',
-        name: 'Product',
-        component: () => import('../views/Product.vue'),
+        path: '/order/:id',
+        name: 'Order',
+        component: () => import('../components/Order.vue'),
         meta: {
             requiresAuth: true
         }
@@ -60,6 +60,11 @@ Vue.use(VueRouter)
         path: '/login',
         name: 'Login',
         component: () => import('../components/Login.vue')
+    },
+    {
+        path: '/signup',
+        name: 'SignUp',
+        component: () => import('../components/SignUp.vue')
     },
 ]
 

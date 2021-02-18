@@ -14,7 +14,6 @@ function formatDate(date: string){
 
 function attachOrderModifiers(orders: any, orderLines: any){
     orders.forEach((order: any) => {
-
         const orderNumber = parseInt(order.orderNumber)
         fb.orders.where("orderId", "==", orderNumber)
             .get()
@@ -33,7 +32,9 @@ function attachOrderModifiers(orders: any, orderLines: any){
                                 quantity: line.quantity,
                                 orderDate: orderDate,
                                 pickupDate: pickupDate,
-                                modifier: lineModifier
+                                modifier: lineModifier,
+                                variants: line.variantOptions,
+                                sqs: order
                             })
                         } catch {
                             console.log("Error")
@@ -55,21 +56,21 @@ async function getSquarespaceOrders(){
 }
 
 async function getOrdersWithModifiers(){
-    let orderLines: Array<any> = []
+    const orderLines: Array<any> = []
     const sqsOrders = await getSquarespaceOrders()
-    orderLines = await attachOrderModifiers(sqsOrders, orderLines)
+    await attachOrderModifiers(sqsOrders, orderLines)
     return orderLines
 }
 
 const ordersModule: Module<any, any> = {
     namespaced: true,
     state: {
-        orders: Object
+        orders: Array
     },
     getters: {
         getOrders: state => {
             return state.orders
-        }
+        },
     },
     mutations: {
         setOrders (state) {

@@ -1,5 +1,5 @@
 <template>
-   <v-app id="login">
+   <v-app id="signup">
       <v-main>
          <v-container fluid fill-height>
             <v-layout align-center justify-center>
@@ -7,13 +7,20 @@
                   <v-card class="elevation-12">
                      <v-toolbar dark color="primary">
                          <v-spacer />
-                        <v-toolbar-title>Butter & Crumble Admin Login</v-toolbar-title>
+                        <v-toolbar-title>Butter & Crumble Admin Sign Up</v-toolbar-title>
                         <v-spacer />
                      </v-toolbar>
                      <v-card-text>
                         <v-form>
+							<v-text-field
+                                prepend-icon="person"
+                                name="name"
+                                label="Name"
+                                type="text"
+                                v-model="name"
+							></v-text-field>
                            <v-text-field
-                              prepend-icon="person"
+                              prepend-icon="email"
                               name="email"
                               label="Email"
                               type="email"
@@ -28,19 +35,20 @@
                               v-model="password"
                            ></v-text-field>
                         </v-form>
-                        <div v-show="loginError">
+                        <div v-show="signUpError">
                             <p class="red--text text-center font-weight-medium">Something went wrong</p>
                             <p class="text-center">{{ errorMessage }}</p>
                         </div>
                      </v-card-text>
                      <v-card-actions>
                         <v-spacer />
-                        <v-btn color="primary" @click="login">Login</v-btn>
-                        <!-- <v-btn color="error" @click="$router.push('SignUp')">Sign Up</v-btn> -->
+                        <v-btn color="primary" @click="signup">Sign Up</v-btn>
+                        <!-- <v-btn color="error" @click="$router.push('Login')">Login</v-btn> -->
                         <v-spacer />
                      </v-card-actions>
                   </v-card>
                </v-flex>
+
             </v-layout>
          </v-container>
      </v-main>
@@ -58,24 +66,25 @@
             return {
                 email: '',
                 password: '',
-                loginError: false,
+                name: '',
+                signUpError: false,
                 errorMessage: ''
             }
         },
         methods: {
             ...mapActions(['setCurrentUser']),
-            login: function() {
-                firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
-                    (user) => {
-                        this.setCurrentUser(user)
-                        this.$router.replace('/account')
-                    },
-                    (err) => {
-                        this.loginError = true
-                        console.log(err.message)
-                        this.errorMessage = err.message
-                    }
-                );
+            signup: function() {
+                // firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+                //     (user) => {
+                //         this.setCurrentUser(user)
+                //         this.$router.replace('/account')
+                //     },
+                //     (err) => {
+                //         this.signUpError = true
+                //         console.log(err.message)
+                //         this.errorMessage = err.message
+                //     }
+                // );
             }
         }
     }

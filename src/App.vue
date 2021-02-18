@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-	<div v-if="$route.name==='Login'">
+	<div v-if="$route.name=== 'Login' || $route.name=== 'SignUp' ">
 		<router-view></router-view>
 	</div>
 	<div v-else>
@@ -8,6 +8,7 @@
 			<v-app-bar app color="primary" dark elevation="0">
 				<v-app-bar-nav-icon @click.stop="sidebarMenu = !sidebarMenu"></v-app-bar-nav-icon>
 				<v-spacer></v-spacer>
+				<v-btn @click="logout()" color="blue darken-3" elevation="2">Log Out</v-btn>
 			</v-app-bar>
 			<v-navigation-drawer
 				v-model="sidebarMenu"
@@ -69,6 +70,7 @@
 </div>
 </template>
 <script>
+import firebase from 'firebase';
 export default {
 	computed: {
 		mini() {
@@ -90,6 +92,13 @@ export default {
 		toggleTheme() {
 			this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
 		},
+		logout(){
+			firebase.auth().signOut().then(() => {
+				this.$router.push('login')
+			}).catch((error) => {
+				console.log(error)
+			});
+		}
 	}
 }
 </script>

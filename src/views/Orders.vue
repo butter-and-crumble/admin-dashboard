@@ -5,14 +5,11 @@
 		:items-per-page="5"
 		class="elevation-1"
 	>
-		<template v-slot:item.lineItems="{ item }">
-			<span>{{item.id}}</span>
-		</template>
-		<!-- <template #item.id="{ item }">
-			<router-link :to="{ name: 'Order', params: { id: item.id } }">
+		<template #item.id="{ item }">
+			<router-link :to="{ name: 'Order', params: { id: item.id, order: item} }">
 				<v-icon color="primary">article</v-icon>
 			</router-link>
-		</template> -->
+		</template>
 	</v-data-table>
 </template>
 
@@ -34,7 +31,7 @@ import { mapGetters } from 'vuex'
 					{ text: 'Order Date', value: 'orderDate' },
 					{ text: 'Pickup Date', value: 'pickupDate' },
 					{ text: 'Pickup Time', value: 'modifier.dateTime.value.time' },
-					{ text: 'Details', value: 'modifier.writing.value' },
+					{ text: 'Details', value: 'id' },
 				],
             }
         },
@@ -43,11 +40,6 @@ import { mapGetters } from 'vuex'
 		},
 		async created(){
 			this.orders = await this.getOrders
-			console.log(this.orders)
 		}
     }
 </script>
-<!--
-<style lang="scss" scoped>
-@import "@/styles/components/orders.scss";
-</style> -->
